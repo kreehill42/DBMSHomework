@@ -1,0 +1,209 @@
+mysql> \. c:\Users\korbe\Desktop\RIT\CIT\DB\HW3\reehill_hw3pt2.sql
+--------------
+/*
+Author: Korben Reehill
+Homework 3 -- Basic DDL & DML Part 2
+ISTE230.05: Intro to DBs & Data Modeling
+Professor Perez-Hardy
+*/
+
+# Querying the WORLD Database
+
+USE world
+--------------
+
+Query OK, 0 rows affected (0.008 sec)
+
+--------------
+/*
+Task 1 -- Who is the head of state for
+'United States'?
+*/
+SELECT headOfState
+FROM Country
+WHERE name='United States'
+--------------
+
++-----------------+
+| headOfState     |
++-----------------+
+| Donald J. Trump |
++-----------------+
+1 row in set (0.010 sec)
+
+--------------
+/*
+Task 2 -- Using a single statement, change where
+the head of state is listed as 'Donald J. Trump' to the
+name of the past President...
+*/
+UPDATE Country
+SET headOfState='Joseph R. Biden'
+WHERE name='United States'
+--------------
+
+Query OK, 1 row affected (0.080 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+--------------
+SELECT headOfState
+FROM Country
+WHERE name='United States'
+--------------
+
++-----------------+
+| headOfState     |
++-----------------+
+| Joseph R. Biden |
++-----------------+
+1 row in set (0.010 sec)
+
+--------------
+/*
+Task #3 -- Show the name of the countries
+that doe not have an independence year specified
+*/
+SELECT name
+FROM Country
+WHERE indepYear IS NULL
+--------------
+
++----------------------------------------------+
+| name                                         |
++----------------------------------------------+
+| Aruba                                        |
+| Anguilla                                     |
+| Netherlands Antilles                         |
+| American Samoa                               |
+| Antarctica                                   |
+| French Southern territories                  |
+| Bermuda                                      |
+| Bouvet Island                                |
+| Cocos (Keeling) Islands                      |
+| Cook Islands                                 |
+| Christmas Island                             |
+| Cayman Islands                               |
+| Western Sahara                               |
+| Falkland Islands                             |
+| Faroe Islands                                |
+| Gibraltar                                    |
+| Guadeloupe                                   |
+| Greenland                                    |
+| French Guiana                                |
+| Guam                                         |
+| Hong Kong                                    |
+| Heard Island and McDonald Islands            |
+| British Indian Ocean Territory               |
+| Macao                                        |
+| Northern Mariana Islands                     |
+| Montserrat                                   |
+| Martinique                                   |
+| Mayotte                                      |
+| New Caledonia                                |
+| Norfolk Island                               |
+| Niue                                         |
+| Pitcairn                                     |
+| Puerto Rico                                  |
+| Palestine                                    |
+| French Polynesia                             |
+| RÈunion                                     |
+| South Georgia and the South Sandwich Islands |
+| Saint Helena                                 |
+| Svalbard and Jan Mayen                       |
+| Saint Pierre and Miquelon                    |
+| Turks and Caicos Islands                     |
+| Tokelau                                      |
+| East Timor                                   |
+| United States Minor Outlying Islands         |
+| Virgin Islands, British                      |
+| Virgin Islands, U.S.                         |
+| Wallis and Futuna                            |
++----------------------------------------------+
+47 rows in set (0.008 sec)
+
+--------------
+/*
+Task #4 -- Show the name and continent of countries
+that have a population of 1 billion or more and
+a life expentancy between 70-80
+*/
+SELECT name, continent
+FROM Country
+WHERE (population>=1000000000) AND (lifeExpectancy BETWEEN 70 AND 80)
+--------------
+
++-------+-----------+
+| name  | continent |
++-------+-----------+
+| China | Asia      |
++-------+-----------+
+1 row in set (0.010 sec)
+
+--------------
+/*
+Task #5 -- List the countries located in the
+continents of 'North America' and 'South America'
+*/
+SELECt name
+FROM Country
+WHERE continent IN ('North America', 'South America')
+--------------
+
++----------------------------------+
+| name                             |
++----------------------------------+
+| Aruba                            |
+| Anguilla                         |
+| Netherlands Antilles             |
+| Argentina                        |
+| Antigua and Barbuda              |
+| Bahamas                          |
+| Belize                           |
+| Bermuda                          |
+| Bolivia                          |
+| Brazil                           |
+| Barbados                         |
+| Canada                           |
+| Chile                            |
+| Colombia                         |
+| Costa Rica                       |
+| Cuba                             |
+| Cayman Islands                   |
+| Dominica                         |
+| Dominican Republic               |
+| Ecuador                          |
+| Falkland Islands                 |
+| Guadeloupe                       |
+| Grenada                          |
+| Greenland                        |
+| Guatemala                        |
+| French Guiana                    |
+| Guyana                           |
+| Honduras                         |
+| Haiti                            |
+| Jamaica                          |
+| Saint Kitts and Nevis            |
+| Saint Lucia                      |
+| Mexico                           |
+| Montserrat                       |
+| Martinique                       |
+| Nicaragua                        |
+| Panama                           |
+| Peru                             |
+| Puerto Rico                      |
+| Paraguay                         |
+| El Salvador                      |
+| Saint Pierre and Miquelon        |
+| Suriname                         |
+| Turks and Caicos Islands         |
+| Trinidad and Tobago              |
+| Uruguay                          |
+| United States                    |
+| Saint Vincent and the Grenadines |
+| Venezuela                        |
+| Virgin Islands, British          |
+| Virgin Islands, U.S.             |
++----------------------------------+
+51 rows in set (0.007 sec)
+
+mysql> NOTEE

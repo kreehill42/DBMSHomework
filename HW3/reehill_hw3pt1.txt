@@ -1,0 +1,78 @@
+mysql> \. c:\Users\korbe\Desktop\RIT\CIT\DB\HW3\reehill_hw3pt1.sql
+--------------
+/*
+Author: Korben Reehill
+Homework 3 -- Basic DDL & DML Part 1
+ISTE230.05: Intro to DBs & Data Modeling
+Professor Perez-Hardy
+*/
+
+# Implement a Single Entity
+
+DROP DATABASE IF EXISTS inventory -- might want to remove later
+--------------
+
+Query OK, 0 rows affected, 1 warning (0.083 sec)
+
+--------------
+CREATE DATABASE inventory
+--------------
+
+Query OK, 1 row affected (0.136 sec)
+
+--------------
+USE inventory
+--------------
+
+Query OK, 0 rows affected (0.006 sec)
+
+--------------
+CREATE TABLE ITEM(
+    itemID VARCHAR(25),
+    itemName VARCHAR(25),
+    name VARCHAR(25),
+    street VARCHAR(25),
+    city VARCHAR(25),
+    colors VARCHAR(25),
+    state CHAR(2),
+    zipcode VARCHAR(10),
+    cost VARCHAR(10),
+    retailPrice VARCHAR(10),
+    notes VARCHAR(255),
+    description VARCHAR(255),
+    returnable CHAR,
+    perishable CHAR,
+    shelfQty INT UNSIGNED,
+    CONSTRAINT itemID_pk PRIMARY KEY (itemID),
+    CONSTRAINT qty_chk CHECK (shelfQty BETWEEN 0 AND 50000)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8
+--------------
+
+Query OK, 0 rows affected, 1 warning (0.428 sec)
+
+--------------
+DESC item -- might want to remove later
+--------------
+
++-------------+--------------+------+-----+---------+-------+
+| Field       | Type         | Null | Key | Default | Extra |
++-------------+--------------+------+-----+---------+-------+
+| itemID      | varchar(25)  | NO   | PRI | NULL    |       |
+| itemName    | varchar(25)  | YES  |     | NULL    |       |
+| name        | varchar(25)  | YES  |     | NULL    |       |
+| street      | varchar(25)  | YES  |     | NULL    |       |
+| city        | varchar(25)  | YES  |     | NULL    |       |
+| colors      | varchar(25)  | YES  |     | NULL    |       |
+| state       | char(2)      | YES  |     | NULL    |       |
+| zipcode     | varchar(10)  | YES  |     | NULL    |       |
+| cost        | varchar(10)  | YES  |     | NULL    |       |
+| retailPrice | varchar(10)  | YES  |     | NULL    |       |
+| notes       | varchar(255) | YES  |     | NULL    |       |
+| description | varchar(255) | YES  |     | NULL    |       |
+| returnable  | char(1)      | YES  |     | NULL    |       |
+| perishable  | char(1)      | YES  |     | NULL    |       |
+| shelfQty    | int unsigned | YES  |     | NULL    |       |
++-------------+--------------+------+-----+---------+-------+
+15 rows in set (0.103 sec)
+
+mysql> NOTEE

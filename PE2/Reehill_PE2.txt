@@ -1,0 +1,39 @@
+mysql> \. c:\Users\korbe\Desktop\RIT\CIT\F25\DBs\PEs\Reehill_PE2.sql
+Query OK, 0 rows affected (0.153 sec)
+
+Query OK, 1 row affected (0.122 sec)
+
++--------------------+
+| Database           |
++--------------------+
+| information_schema |
+| kcrpe2             |
+| mysql              |
+| performance_schema |
+| sys                |
++--------------------+
+5 rows in set (0.023 sec)
+
+Query OK, 0 rows affected (0.008 sec)
+
+Query OK, 0 rows affected, 1 warning (0.067 sec)
+
+Query OK, 0 rows affected, 1 warning (0.466 sec)
+
+mysql> NOTEE
+
+
+
+mysql> SHOW COLUMNS FROM BOOK;
++---------------+--------------+------+-----+---------+-------+
+| Field         | Type         | Null | Key | Default | Extra |
++---------------+--------------+------+-----+---------+-------+
+| title         | varchar(50)  | YES  |     | NULL    |       |
+| isbn13Number  | char(13)     | NO   | PRI | NULL    |       |
+| author        | varchar(255) | YES  |     | NULL    |       |
+| numberOfPages | int          | YES  |     | NULL    |       |
+| releaseDate   | date         | YES  |     | NULL    |       |
++---------------+--------------+------+-----+---------+-------+
+5 rows in set (0.029 sec)
+
+mysql> NOTEE;

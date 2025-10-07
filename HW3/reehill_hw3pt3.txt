@@ -1,0 +1,169 @@
+mysql> \. c:\Users\korbe\Desktop\RIT\CIT\DB\HW3\reehill_hw3pt3.sql
+--------------
+/*
+Author: Korben Reehill
+Homework 3 -- Basic DDL & DML Part 2
+ISTE230.05: Intro to DBs & Data Modeling
+Professor Perez-Hardy
+*/
+
+/*
+Task 1 - Add New Data into contactInfo Table
+Add data in Appendix A to contactInfo table
+Add a record for yourself
+Results in total 5 records
+Show the contents of the database using a select command
+*/
+INSERT INTO contactInfo
+(contactID, firstName, middleInitial, lastName, email, url, birthday, notes)
+VALUES 
+(3, 'Eli', 'T', 'Wallowby', 'etwallowby@concor.com', 'www.concor.com/~wallowby', '1956-03-26', 'All meetings must be scheduled through his assistant.'),
+(4, 'Eve', 'C', 'Sampson', 'esampson@concor.com', NULL, '1972-05-11', 'Very helpful.'),
+(5, 'Carson', 'B', 'Campbell', 'cbc232@mvch.org', NULL, '1955-01-05', 'Wife: Lisa Kids: Lucas, Lucy, and Lucinda.'),
+(2, 'Korben', 'C', 'Reehill', 'kcr5563@rit.edu', NULL, '2005-05-17', NULL)
+--------------
+
+Query OK, 4 rows affected (0.087 sec)
+Records: 4  Duplicates: 0  Warnings: 0
+
+--------------
+SELECT *
+FROM contactInfo
+--------------
+
++-----------+-----------+---------------+----------+-----------------------+------------------------------+------------+-------------------------------------------------------+
+| contactID | firstName | middleInitial | lastName | email                 | url                          | birthday   | notes                                                 |
++-----------+-----------+---------------+----------+-----------------------+------------------------------+------------+-------------------------------------------------------+
+|         1 | David     | C             | Munson   | munson@rit.edu        | http://www.rit.edu/president | NULL       | Started as President of RIT on July 1, 2017.          |
+|         2 | Korben    | C             | Reehill  | kcr5563@rit.edu       | NULL                         | 2005-05-17 | NULL                                                  |
+|         3 | Eli       | T             | Wallowby | etwallowby@concor.com | www.concor.com/~wallowby     | 1956-03-26 | All meetings must be scheduled through his assistant. |
+|         4 | Eve       | C             | Sampson  | esampson@concor.com   | NULL                         | 1972-05-11 | Very helpful.                                         |
+|         5 | Carson    | B             | Campbell | cbc232@mvch.org       | NULL                         | 1955-01-05 | Wife: Lisa Kids: Lucas, Lucy, and Lucinda.            |
++-----------+-----------+---------------+----------+-----------------------+------------------------------+------------+-------------------------------------------------------+
+5 rows in set (0.009 sec)
+
+--------------
+/*
+Task 2 - Add an attribute to the contactInfo table
+Add an attribute called 'nickname' to the contactInfo table
+VARCHAR(20), does not have to have a value
+DEFAULT 'To Be Determined'
+DESC table
+*/
+ALTER TABLE contactInfo
+ADD COLUMN nickname VARCHAR(20) DEFAULT 'To Be Determined'
+--------------
+
+Query OK, 0 rows affected (0.309 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+--------------
+DESC contactInfo
+--------------
+
++---------------+--------------+------+-----+------------------+-------+
+| Field         | Type         | Null | Key | Default          | Extra |
++---------------+--------------+------+-----+------------------+-------+
+| contactID     | int          | NO   | PRI | NULL             |       |
+| firstName     | varchar(15)  | YES  |     | NULL             |       |
+| middleInitial | char(1)      | YES  |     | NULL             |       |
+| lastName      | varchar(25)  | YES  |     | NULL             |       |
+| email         | varchar(40)  | YES  |     | NULL             |       |
+| url           | varchar(55)  | YES  |     | NULL             |       |
+| birthday      | date         | YES  |     | NULL             |       |
+| notes         | varchar(255) | YES  |     | NULL             |       |
+| nickname      | varchar(20)  | YES  |     | To Be Determined |       |
++---------------+--------------+------+-----+------------------+-------+
+9 rows in set (0.033 sec)
+
+--------------
+/*
+Task 3 - Add constraints to the contactInfo table
+Modify firstName & lastName attributes so that value is required
+DESC table
+*/
+ALTER TABLE contactInfo
+MODIFY COLUMN firstName VARCHAR(15) NOT NULL,
+MODIFY COLUMN lastName VARCHAR(25) NOT NULL
+--------------
+
+Query OK, 0 rows affected (1.284 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+--------------
+DESC contactInfo
+--------------
+
++---------------+--------------+------+-----+------------------+-------+
+| Field         | Type         | Null | Key | Default          | Extra |
++---------------+--------------+------+-----+------------------+-------+
+| contactID     | int          | NO   | PRI | NULL             |       |
+| firstName     | varchar(15)  | NO   |     | NULL             |       |
+| middleInitial | char(1)      | YES  |     | NULL             |       |
+| lastName      | varchar(25)  | NO   |     | NULL             |       |
+| email         | varchar(40)  | YES  |     | NULL             |       |
+| url           | varchar(55)  | YES  |     | NULL             |       |
+| birthday      | date         | YES  |     | NULL             |       |
+| notes         | varchar(255) | YES  |     | NULL             |       |
+| nickname      | varchar(20)  | YES  |     | To Be Determined |       |
++---------------+--------------+------+-----+------------------+-------+
+9 rows in set (0.025 sec)
+
+--------------
+/*
+Task 4 - Update an existing record
+UPDATE record for Munson -- give him 'Dave' nickname
+SELECT him name to prove change implemented
+*/
+UPDATE contactInfo
+SET nickname='Dave'
+WHERE contactID=1
+--------------
+
+Query OK, 1 row affected (0.071 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+--------------
+SELECT nickname, firstName, lastName
+FROM contactInfo
+WHERE contactID=1
+--------------
+
++----------+-----------+----------+
+| nickname | firstName | lastName |
++----------+-----------+----------+
+| Dave     | David     | Munson   |
++----------+-----------+----------+
+1 row in set (0.007 sec)
+
+--------------
+/*
+Task 5 - Delete records
+Single statement that will delete the record with
+url: www.concor.com/~wallowby
+Show the final contents of the table with the appropriate SELECT cmd
+*/
+
+DELETE
+FROM contactInfo
+WHERE url='www.concor.com/~wallowby'
+--------------
+
+Query OK, 1 row affected (0.043 sec)
+
+--------------
+SELECT *
+FROM contactInfo
+--------------
+
++-----------+-----------+---------------+----------+---------------------+------------------------------+------------+----------------------------------------------+------------------+
+| contactID | firstName | middleInitial | lastName | email               | url                          | birthday   | notes                                        | nickname         |
++-----------+-----------+---------------+----------+---------------------+------------------------------+------------+----------------------------------------------+------------------+
+|         1 | David     | C             | Munson   | munson@rit.edu      | http://www.rit.edu/president | NULL       | Started as President of RIT on July 1, 2017. | Dave             |
+|         2 | Korben    | C             | Reehill  | kcr5563@rit.edu     | NULL                         | 2005-05-17 | NULL                                         | To Be Determined |
+|         4 | Eve       | C             | Sampson  | esampson@concor.com | NULL                         | 1972-05-11 | Very helpful.                                | To Be Determined |
+|         5 | Carson    | B             | Campbell | cbc232@mvch.org     | NULL                         | 1955-01-05 | Wife: Lisa Kids: Lucas, Lucy, and Lucinda.   | To Be Determined |
++-----------+-----------+---------------+----------+---------------------+------------------------------+------------+----------------------------------------------+------------------+
+4 rows in set (0.005 sec)
+
+mysql> NOTEE
