@@ -1,0 +1,338 @@
+mysql> \. c:\Users\korbe\RIT\CIT\DB\PE10\reehill_pe10.sql
+--------------
+# File: reehill_pe10.sql
+--------------
+
+Query OK, 0 rows affected (0.012 sec)
+
+--------------
+# Name: Korben Reehill
+--------------
+
+Query OK, 0 rows affected (0.004 sec)
+
+--------------
+# ISTE230 - Intro to DBs and Data Modeling
+--------------
+
+Query OK, 0 rows affected (0.004 sec)
+
+--------------
+# Professor Hardy
+--------------
+
+Query OK, 0 rows affected (0.004 sec)
+
+--------------
+# Date: 11/12/25
+--------------
+
+Query OK, 0 rows affected (0.004 sec)
+
+--------------
+# Practice Exercise #10 - Implementing a Relational Schema using SQL
+--------------
+
+Query OK, 0 rows affected (0.003 sec)
+
+--------------
+DROP DATABASE IF EXISTS reehill_pe10
+--------------
+
+Query OK, 10 rows affected (1.937 sec)
+
+--------------
+CREATE DATABASE reehill_pe10
+--------------
+
+Query OK, 1 row affected (0.104 sec)
+
+--------------
+USE reehill_pe10
+--------------
+
+Query OK, 0 rows affected (0.007 sec)
+
+--------------
+CREATE TABLE person(
+    personID INT AUTO_INCREMENT NOT NULL,
+    firstName VARCHAR(25),
+    lastName VARCHAR(25),
+    subtype ENUM('s', 'p', 'n', 'b') NOT NULL,
+CONSTRAINT person_pk PRIMARY KEY (personID)
+)ENGINE=InnoDB DEFAULT CHARSET=utf8
+--------------
+
+Query OK, 0 rows affected, 1 warning (0.326 sec)
+
+--------------
+DESC person
+--------------
+
++-----------+-----------------------+------+-----+---------+----------------+
+| Field     | Type                  | Null | Key | Default | Extra          |
++-----------+-----------------------+------+-----+---------+----------------+
+| personID  | int                   | NO   | PRI | NULL    | auto_increment |
+| firstName | varchar(25)           | YES  |     | NULL    |                |
+| lastName  | varchar(25)           | YES  |     | NULL    |                |
+| subtype   | enum('s','p','n','b') | NO   |     | NULL    |                |
++-----------+-----------------------+------+-----+---------+----------------+
+4 rows in set (0.036 sec)
+
+--------------
+CREATE TABLE department(
+    deptNum TINYINT AUTO_INCREMENT,
+    name VARCHAR(50),
+CONSTRAINT department_pk PRIMARY KEY (deptNum)
+)ENGINE=InnoDB DEFAULT CHARSET=utf8
+--------------
+
+Query OK, 0 rows affected, 1 warning (0.303 sec)
+
+--------------
+DESC department
+--------------
+
++---------+-------------+------+-----+---------+----------------+
+| Field   | Type        | Null | Key | Default | Extra          |
++---------+-------------+------+-----+---------+----------------+
+| deptNum | tinyint     | NO   | PRI | NULL    | auto_increment |
+| name    | varchar(50) | YES  |     | NULL    |                |
++---------+-------------+------+-----+---------+----------------+
+2 rows in set (0.025 sec)
+
+--------------
+CREATE TABLE insurance_company(
+    coID INT AUTO_INCREMENT,
+    name VARCHAR(80),
+CONSTRAINT insurance_company_pk PRIMARY KEY (coID)
+)ENGINE=InnoDB DEFAULT CHARSET=utf8
+--------------
+
+Query OK, 0 rows affected, 1 warning (0.310 sec)
+
+--------------
+DESC insurance_company
+--------------
+
++-------+-------------+------+-----+---------+----------------+
+| Field | Type        | Null | Key | Default | Extra          |
++-------+-------------+------+-----+---------+----------------+
+| coID  | int         | NO   | PRI | NULL    | auto_increment |
+| name  | varchar(80) | YES  |     | NULL    |                |
++-------+-------------+------+-----+---------+----------------+
+2 rows in set (0.031 sec)
+
+--------------
+# Subtype of person
+--------------
+
+Query OK, 0 rows affected (0.004 sec)
+
+--------------
+CREATE TABLE staff(
+    staffID INT,
+    managerID INT,
+    stafftype ENUM('s','n', 'd') NOT NULL,
+CONSTRAINT staff_staffID_fk FOREIGN KEY (staffID) REFERENCES person(personID),
+CONSTRAINT staff_managerID_fk FOREIGN KEY (managerID) REFERENCES staff(staffID),
+CONSTRAINT staff_pk PRIMARY KEY (staffID)
+)ENGINE=InnoDB DEFAULT CHARSET=utf8
+--------------
+
+Query OK, 0 rows affected, 1 warning (1.081 sec)
+
+--------------
+DESC staff
+--------------
+
++-----------+-------------------+------+-----+---------+-------+
+| Field     | Type              | Null | Key | Default | Extra |
++-----------+-------------------+------+-----+---------+-------+
+| staffID   | int               | NO   | PRI | NULL    |       |
+| managerID | int               | YES  | MUL | NULL    |       |
+| stafftype | enum('s','n','d') | NO   |     | NULL    |       |
++-----------+-------------------+------+-----+---------+-------+
+3 rows in set (0.029 sec)
+
+--------------
+# Subtype of staff
+--------------
+
+Query OK, 0 rows affected (0.005 sec)
+
+--------------
+CREATE TABLE doctor(
+    doctorID INT,
+    mentorID INT,
+CONSTRAINT doctor_doctorID_fk FOREIGN KEY (doctorID) REFERENCES staff(staffID),
+CONSTRAINT doctor_mentorID_fk FOREIGN KEY (mentorID) REFERENCES doctor(doctorID),
+CONSTRAINT doctor_pk PRIMARY KEY (doctorID)
+)ENGINE=InnoDB DEFAULT CHARSET=utf8
+--------------
+
+Query OK, 0 rows affected, 1 warning (0.576 sec)
+
+--------------
+DESC doctor
+--------------
+
++----------+------+------+-----+---------+-------+
+| Field    | Type | Null | Key | Default | Extra |
++----------+------+------+-----+---------+-------+
+| doctorID | int  | NO   | PRI | NULL    |       |
+| mentorID | int  | YES  | MUL | NULL    |       |
++----------+------+------+-----+---------+-------+
+2 rows in set (0.029 sec)
+
+--------------
+# Subtype of staff
+--------------
+
+Query OK, 0 rows affected (0.003 sec)
+
+--------------
+CREATE TABLE nurse(
+    nurseID INT,
+    certification ENUM('LPN', 'RN', 'APRN') NOT NULL,
+CONSTRAINT nurse_nurseID_fk FOREIGN KEY (nurseID) REFERENCES staff(staffID),
+CONSTRAINT nurse_pk PRIMARY KEY (nurseID)
+)ENGINE=InnoDB DEFAULT CHARSET=utf8
+--------------
+
+Query OK, 0 rows affected, 1 warning (0.322 sec)
+
+--------------
+DESC nurse
+--------------
+
++---------------+-------------------------+------+-----+---------+-------+
+| Field         | Type                    | Null | Key | Default | Extra |
++---------------+-------------------------+------+-----+---------+-------+
+| nurseID       | int                     | NO   | PRI | NULL    |       |
+| certification | enum('LPN','RN','APRN') | NO   |     | NULL    |       |
++---------------+-------------------------+------+-----+---------+-------+
+2 rows in set (0.027 sec)
+
+--------------
+# Subtype of person
+--------------
+
+Query OK, 0 rows affected (0.004 sec)
+
+--------------
+CREATE TABLE patient(
+    patientID INT,
+    doctorID INT,
+CONSTRAINT patient_patientID_fk FOREIGN KEY (patientID) REFERENCES person(personID),
+CONSTRAINT patient_doctorID_fk FOREIGN KEY (doctorID) REFERENCES doctor(doctorID),
+CONSTRAINT patient_pk PRIMARY KEY (patientID)
+)ENGINE=InnoDB DEFAULT CHARSET=utf8
+--------------
+
+Query OK, 0 rows affected, 1 warning (0.698 sec)
+
+--------------
+DESC patient
+--------------
+
++-----------+------+------+-----+---------+-------+
+| Field     | Type | Null | Key | Default | Extra |
++-----------+------+------+-----+---------+-------+
+| patientID | int  | NO   | PRI | NULL    |       |
+| doctorID  | int  | YES  | MUL | NULL    |       |
++-----------+------+------+-----+---------+-------+
+2 rows in set (0.029 sec)
+
+--------------
+# Subtype of staff
+--------------
+
+Query OK, 0 rows affected (0.003 sec)
+
+--------------
+CREATE TABLE support_staff(
+    supportStaffID INT,
+    wage DECIMAL(4, 2) NOT NULL,
+CONSTRAINT support_staff_supportStaffID_fk FOREIGN KEY (supportStaffID) REFERENCES staff(staffID),
+CONSTRAINT support_staff_pk PRIMARY KEY (supportStaffID)
+)ENGINE=InnoDB DEFAULT CHARSET=utf8
+--------------
+
+Query OK, 0 rows affected, 1 warning (0.319 sec)
+
+--------------
+DESC support_staff
+--------------
+
++----------------+--------------+------+-----+---------+-------+
+| Field          | Type         | Null | Key | Default | Extra |
++----------------+--------------+------+-----+---------+-------+
+| supportStaffID | int          | NO   | PRI | NULL    |       |
+| wage           | decimal(4,2) | NO   |     | NULL    |       |
++----------------+--------------+------+-----+---------+-------+
+2 rows in set (0.023 sec)
+
+--------------
+# Dependent on insurance_company, patient
+--------------
+
+Query OK, 0 rows affected (0.003 sec)
+
+--------------
+CREATE TABLE insurance_policy(
+    policyNum VARCHAR(25),
+    patientID INT,
+    insCoID INT,
+CONSTRAINT insurance_policy_patientID_fk FOREIGN KEY (patientID) REFERENCES patient(patientID),
+CONSTRAINT insurance_policy_insCoID_fk FOREIGN KEY (insCoID) REFERENCES insurance_company(coID),
+CONSTRAINT insurance_policy_pk PRIMARY KEY (policyNum, patientID, insCoID)
+)ENGINE=InnoDB DEFAULT CHARSET=utf8
+--------------
+
+Query OK, 0 rows affected, 1 warning (0.611 sec)
+
+--------------
+DESC insurance_policy
+--------------
+
++-----------+-------------+------+-----+---------+-------+
+| Field     | Type        | Null | Key | Default | Extra |
++-----------+-------------+------+-----+---------+-------+
+| policyNum | varchar(25) | NO   | PRI | NULL    |       |
+| patientID | int         | NO   | PRI | NULL    |       |
+| insCoID   | int         | NO   | PRI | NULL    |       |
++-----------+-------------+------+-----+---------+-------+
+3 rows in set (0.025 sec)
+
+--------------
+# Dependent on department and staff
+--------------
+
+Query OK, 0 rows affected (0.003 sec)
+
+--------------
+CREATE TABLE department_staff(
+    deptNum TINYINT,
+    staffID INT,
+CONSTRAINT department_staff_deptNum_fk FOREIGN KEY (deptNum) REFERENCES department(deptNum),
+CONSTRAINT department_staff_staffID_fk FOREIGN KEY (staffID) REFERENCES staff(staffID),
+CONSTRAINT department_staff_pk PRIMARY KEY (deptNum, staffID)
+)ENGINE=InnoDB DEFAULT CHARSET=utf8
+--------------
+
+Query OK, 0 rows affected, 1 warning (0.630 sec)
+
+--------------
+DESC department_staff
+--------------
+
++---------+---------+------+-----+---------+-------+
+| Field   | Type    | Null | Key | Default | Extra |
++---------+---------+------+-----+---------+-------+
+| deptNum | tinyint | NO   | PRI | NULL    |       |
+| staffID | int     | NO   | PRI | NULL    |       |
++---------+---------+------+-----+---------+-------+
+2 rows in set (0.028 sec)
+
+mysql> NOTEE
